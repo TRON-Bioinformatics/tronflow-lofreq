@@ -21,7 +21,6 @@ Input:
     name1	tumor_bam1	normal_bam1
     name2	tumor_bam2	normal_bam2
     * reference: path to the FASTA genome reference (indexes expected *.fai)
-    * dbSNP: path to the dbSNP VCF, bgzipped and tabix-indexed. Somatic mutations (ie: SOA=2 and SOA=3) are expected to be filtered out from dbSNP.
     
 Optional input:
     * output: the folder where to publish output
@@ -46,6 +45,15 @@ Replicate BAM files can be provided comma-separated, this will be merged into a 
 | patient_2             | /path/to/patient_2.tumor.1.bam,/path/to/patient_2.tumor.2.bam | /path/to/patient_2.normal.1.bam,/path/to/patient_2.tumor.2.bam |
 
 
+## Current limitations
+
+Although it is recommended to provide dbSNP without somatic variants for filtering purposes, this is not supported yet.
+
+If your BAM files were not preprocessed through GATK's BQSR, LoFreq provides an alternative, this is not supported yet.
+
+If replicates are provided, a conservative approach would be filter out variants not detected in every pairwise combination.
+A more relaxed approach would the opposite to keep them all. At the moment we just merge all reads in a single BAM, 
+thus we lose the advantage of having replicates apart from having greater coverage.
 
 ## References
 
