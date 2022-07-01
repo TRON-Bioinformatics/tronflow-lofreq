@@ -57,16 +57,28 @@ process CONCAT_FILES {
 
 
     output:
-        tuple file("${name}.lofreq.somatic.vcf"),
-            file("${name}.lofreq.somatic.raw.vcf"),
-            file("${name}.lofreq.tumor_stringent.vcf"),
-            file("${name}.lofreq.normal_stringent.vcf"),
+        tuple file("${name}.lofreq.somatic.vcf.gz"),
+            file("${name}.lofreq.somatic.vcf.gz.tbi"),
+            file("${name}.lofreq.somatic.raw.vcf.gz"),
+            file("${name}.lofreq.somatic.raw.vcf.gz.tbi"),
+            file("${name}.lofreq.tumor_stringent.vcf.gz"),
+            file("${name}.lofreq.tumor_stringent.vcf.gz.tbi"),
+            file("${name}.lofreq.normal_stringent.vcf.gz"),
+            file("${name}.lofreq.normal_stringent.vcf.gz.tbi"),
             emit: vcfs
 
     """
-    bcftools concat --allow-overlaps ${passed_indels} ${passed_snvs} > ${name}.lofreq.somatic.vcf
-    bcftools concat --allow-overlaps ${raw_indels} ${raw_snvs} > ${name}.lofreq.somatic.raw.vcf
-    bcftools concat --allow-overlaps ${tumor_indels} ${tumor_snvs} > ${name}.lofreq.tumor_stringent.vcf
-    bcftools concat --allow-overlaps ${normal_indels} ${normal_snvs} > ${name}.lofreq.normal_stringent.vcf
+    bcftools concat --allow-overlaps ${passed_indels} ${passed_snvs} -O z > ${name}.lofreq.somatic.vcf.gz
+    tabix -p vcf ${name}.lofreq.somatic.vcf.gz
+
+    bcftools concat --allow-overlaps ${raw_indels} ${raw_snvs} -O z > ${name}.lofreq.somatic.raw.vcf.gz
+    tabix -p vcf ${name}.lofreq.somatic.raw.vcf.gz
+
+    bcftools concat --allow-overlaps ${tumor_indels} ${tumor_snvs} -O z > ${name}.lofreq.tumor_stringent.vcf.gz
+    tabix -p vcf ${name}.lofreq.tumor_stringent.vcf.gz
+
+    bcftools concat --allow-overlaps ${normal_indels} ${normal_snvs} -O z > ${name}.lofreq.normal_stringent.vcf.gz
+    tabix -p vcf ${name}.lofreq.normal_stringent.vcf.gz
+
   	"""
 }
