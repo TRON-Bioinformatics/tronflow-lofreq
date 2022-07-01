@@ -22,9 +22,15 @@ process LOFREQ {
 
     script:
     """
+    lofreq viterbi -f ${params.reference} ${normal_bam} | lofreq alnqual  -b - ${params.reference} > normal.ready.bam
+    samtools index normal.ready.bam
+
+    lofreq viterbi -f ${params.reference} ${tumor_bam} | lofreq alnqual  -b - ${params.reference} > tumor.ready.bam
+    samtools index tumor.ready.bam
+
     lofreq somatic \
-    -n ${normal_bam} \
-    -t ${tumor_bam} \
+    -n normal.ready.bam \
+    -t tumor.ready.bam \
     -f ${params.reference} \
     --threads ${task.cpus} -o ${name}.
     """
