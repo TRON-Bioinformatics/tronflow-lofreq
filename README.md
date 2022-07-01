@@ -12,8 +12,6 @@ $ nextflow run tron-bioinformatics/tronflow-lofreq -profile conda --help
 Usage:
     nextflow run tron-bioinformatics/tronflow-lofreq -profile conda --input_files input_files --reference reference.fasta
 
-This workflow is based on the implementation at /code/iCaM/scripts/mutect2_ID.sh
-
 Input:
     * input_files: the path to a tab-separated values file containing in each row the sample name, tumor bam and normal bam
     The input file does not have header!
